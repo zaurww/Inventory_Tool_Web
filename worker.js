@@ -122,9 +122,13 @@ self.addEventListener("message", async ({ data }) => {
     await processWorkbook(data.name, data.buffer);
   } catch (error) {
     const message = error.message || String(error);
+    const lastLine = message.split("\n").filter(Boolean).at(-1) || message;
+    const invalidWorkbook = /BadZipFile|InvalidFileException/.test(message);
     self.postMessage({
       type: "process-error",
-      message: message.split("\n").filter(Boolean).at(-1) || message,
+      message: invalidWorkbook
+        ? "Fayl düzgün XLSX kitabı deyil və ya zədələnib. Excel-də açıb .xlsx formatında yenidən saxlayın."
+        : lastLine,
     });
   }
 });
