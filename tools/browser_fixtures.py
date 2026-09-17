@@ -3,6 +3,8 @@ from pathlib import Path
 import argparse
 import json
 import sys
+from datetime import date
+from decimal import Decimal
 from openpyxl import load_workbook
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -10,7 +12,8 @@ sys.path.insert(0, str(ROOT))
 import inventory as inv
 from browser_api import process_workbook
 from input_layout import SHEETS
-from report_locale import SHEETS as REPORT_SHEETS
+from report_locale import SHEETS as REPORT_SHEETS, LABELS
+from sample_workbooks import public_workbooks, workbook_parts, DEMO_CHECKS
 from test_inventory import write_modern_fixture
 
 
@@ -23,6 +26,20 @@ def main():
     if not directory.is_relative_to(ROOT / '.work'):
         raise ValueError('QA artifacts must stay inside the project .work directory')
     if args.verify:
+        for name, content in public_workbooks().items():
+            assert workbook_parts((directory / Path(name).name).read_bytes()) == workbook_parts(content), name
+        demo = load_workbook(directory / 'demo-report.xlsx')
+        try:
+            for table, month, sku, metric, expected_value in DEMO_CHECKS:
+                ws = demo[REPORT_SHEETS[table]]
+                headers = [c.value for c in ws[6]]
+                records = [dict(zip(headers, row)) for row in ws.iter_rows(min_row=7, values_only=True)]
+                record = next(r for r in records
+                              if r[LABELS['Month']].date() == date(2025, month, 1)
+                              and (sku is None or r[LABELS['SKU']] == sku))
+                assert Decimal(str(record[LABELS[metric]])) == Decimal(expected_value), (table, month, metric)
+        finally:
+            demo.close()
         expected = inv.read_input(directory / 'native-updated.xlsx')[0]
         downloaded = inv.read_input(directory / 'updated.xlsx')[0]
         repeated = inv.read_input(directory / 'repeat-updated.xlsx')[0]
@@ -43,6 +60,7 @@ def main():
             browser.close()
             repeated_report.close()
         print('Browser and native Python: input data, stable codes and all report tables match.')
+        print('Public template/demo downloads match the generated files; all 14 demo controls match the browser report.')
         return
     directory.mkdir(parents=True, exist_ok=False)
     source = directory / 'synthetic.xlsx'

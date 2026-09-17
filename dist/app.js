@@ -205,7 +205,9 @@ function renderFailure(meta, files) {
   finishRequest();
 }
 
-const worker = new Worker("./worker.js", { type: "module" });
+const workerUrl = new URL("./worker.js", import.meta.url);
+workerUrl.search = new URL(import.meta.url).search;
+const worker = new Worker(workerUrl, { type: "module" });
 
 worker.addEventListener("message", ({ data }) => {
   if (data.type === "status") {

@@ -26,7 +26,7 @@ from openpyxl.utils import get_column_letter
 from input_layout import SHEETS, FIELDS, OPTIONAL_HEADERS, SETTINGS, TYPES, canonical_columns
 from input_layout import AZ_FIELDS, AZ_SHEETS, resolve_sheet, schema_metadata, canonical_type, canonical_setting
 
-VERSION = "1.2.0"
+VERSION = "1.2.1"
 getcontext().prec = 34
 ZERO = Decimal(0)
 EPS = Decimal("1e-18")

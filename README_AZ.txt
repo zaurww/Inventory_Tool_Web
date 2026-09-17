@@ -1,10 +1,20 @@
-ANBAR UÇOTU — VERSİYA 1.2.0
+ANBAR UÇOTU — VERSİYA 1.2.1
 
 BAŞLAMAQ
 
 Veb versiya: https://zaurww.github.io/Inventory_Tool_Web/
 Saytdan istifadə üçün Python quraşdırmaq lazım deyil.
+Versiya səhifənin aşağı hissəsində və hesabatın Məlumat vərəqində göstərilir.
 Kompüterdə yerli sınaq üçün aşağıdakı Run_Web_Pilot.bat üsulu da qalır.
+
+İlk istifadə üçün “Şablonu endir” düyməsi ilə boş giriş kitabını endirin.
+Excel-də Parametrlər vərəqində şirkəti və hər iki ayı, sonra malları,
+kontragentləri və əməliyyatları doldurun. Kitabı saxlayıb saytda seçin.
+“Demonu endir” düyməsi ilə uydurma məlumatlı sınaq kitabını endirə bilərsiniz.
+Demonu saytda hesablayın və hesabatı “Nümunə yoxlaması” vərəqindəki nəticələrlə
+müqayisə edin. Hesabat məbləğləri 2 onluq rəqəmə yuvarlaq göstərir;
+yoxlama vərəqində dəqiq qiymətlər verilib. Demo yalnız sınaq üçündür.
+Hər iki fayl hesablama modulunun yüklənməsini gözləmədən endirilə bilər.
 
 Run_Web_Pilot.bat faylını açın. Brauzerdə http://127.0.0.1:8765/ açılır.
 XLSX kitabını seçin və “Hesabla və faylları hazırla” düyməsini basın.

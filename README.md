@@ -12,6 +12,11 @@ Moving Average is not implemented. User workbooks stay on their device.
 This is the single source repository. `dist/` contains authored web assets;
 `python build_web.py` generates the browser Python copies in ignored `dist/py/`.
 Do not edit generated copies. Local preview: `Run_Web_Pilot.bat`.
+The build also generates a blank AZ template and a fictional demo with expected
+results in ignored `dist/downloads/`. `sample_workbooks.py` is their only source;
+no local accounting workbook is read. Both downloads work before Pyodide loads.
+Publication validates their XLSX contents against freshly generated samples,
+in addition to checking the public-file allowlist. Never commit these XLSX files.
 
 Run `python -m unittest -v test_inventory test_migration test_web` after creating
 the local `.work` directory. CI tests Python 3.12 and 3.14.
@@ -41,3 +46,9 @@ to an existing installed module URL. Finally run
 downloaded results with native Python. Tests include repeat calculation, stable
 codes, invalid data, corrupted files, downloads, mobile layout and HTTP traffic.
 Only synthetic data is used, and all artifacts stay under ignored `.work/`.
+Starter downloads are also checked with JavaScript disabled. The downloaded demo
+is calculated in the browser and its report is compared with 14 fixed controls.
+
+Every user-facing release increments `inventory.VERSION` and the matching
+footer / JS / CSS versions in `dist/index.html` and staff documentation. The
+build rejects mismatched versions; versioned asset URLs also refresh browser caches.

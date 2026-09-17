@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="Excel faylından aylıq orta maya dəyəri ilə yerli anbar hesablaması.">
   <title>Anbar uçotu — aylıq orta maya dəyəri</title>
-  <link rel="stylesheet" href="./styles.css">
+  <link rel="stylesheet" href="./styles.css?v=1.2.1">
 </head>
 <body>
   <div class="app-shell">
@@ -33,6 +33,22 @@
 
         <div class="content-grid">
           <div class="primary-panel">
+            <section class="starter-downloads" aria-labelledby="starter-title">
+              <h3 id="starter-title">İlk dəfə başlayırsınız?</h3>
+              <div class="download-list">
+                <div class="download-card starter-card">
+                  <strong>Boş şablon</strong>
+                  <span>Şablonu endirin, Excel-də doldurub saxlayın, sonra aşağıdan seçin.</span>
+                  <a class="download-button" id="template-download" href="./downloads/Inventory_Template_AZ.xlsx" download="Inventory_Template_AZ.xlsx">Şablonu endir</a>
+                </div>
+                <div class="download-card starter-card">
+                  <strong>Demo və yoxlama</strong>
+                  <span>Uydurma əməliyyatları hesablayın. Nəticələri “Nümunə yoxlaması” vərəqi ilə tutuşdurun.</span>
+                  <a class="download-button" id="demo-download" href="./downloads/Inventory_Demo_AZ.xlsx" download="Inventory_Demo_AZ.xlsx">Demonu endir</a>
+                </div>
+              </div>
+            </section>
+
             <label class="drop-zone" id="drop-zone" for="file-input">
               <input id="file-input" type="file" accept=".xlsx,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet">
               <span class="file-mark" aria-hidden="true">XLSX</span>
@@ -105,11 +121,11 @@
     </main>
 
     <footer>
-      <span>Inventory Tool 1.2.0</span>
+      <span id="app-version">Inventory Tool 1.2.1</span>
       <span>Bir ümumi anbar · ƏDV-siz məbləğlər</span>
     </footer>
   </div>
 
-  <script type="module" src="./app.js"></script>
+  <script type="module" src="./app.js?v=1.2.1"></script>
 </body>
 </html>

@@ -43,6 +43,7 @@ input {
 }
 
 button:focus-visible,
+a:focus-visible,
 label:focus-within {
   outline: 3px solid rgba(232, 165, 38, 0.45);
   outline-offset: 3px;
@@ -444,6 +445,25 @@ h3 {
   color: var(--muted);
   font-size: 0.85rem;
   line-height: 1.45;
+}
+
+.starter-downloads {
+  margin-bottom: 24px;
+}
+
+.starter-card {
+  display: flex;
+  flex-direction: column;
+  border-color: var(--line);
+  background: #f7f9fb;
+}
+
+.starter-card span {
+  flex: 1;
+}
+
+.download-button:hover {
+  background: var(--navy-dark);
 }
 
 .download-button {

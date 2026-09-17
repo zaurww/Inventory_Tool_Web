@@ -20,8 +20,34 @@ context.on('requestfailed', r => failures.push({url:r.url(), error:r.failure()?.
 page.on('pageerror', e => errors.push(e.message));
 const started = Date.now();
 try {
+  // Starter files must work even when JavaScript/Pyodide is unavailable.
+  const starterContext = await browser.newContext({acceptDownloads: true, javaScriptEnabled: false});
+  const starterPage = await starterContext.newPage();
+  const starterResponse = await starterPage.goto(url, {waitUntil:'domcontentloaded'});
+  assert.equal(starterResponse.status(), 200);
+  for (const [id, filename] of [
+    ['template-download', 'Inventory_Template_AZ.xlsx'],
+    ['demo-download', 'Inventory_Demo_AZ.xlsx'],
+  ]) {
+    assert(await starterPage.locator(`#${id}`).isVisible());
+    const pending = starterPage.waitForEvent('download');
+    await starterPage.locator(`#${id}`).click();
+    const result = await pending;
+    assert.equal(result.suggestedFilename(), filename);
+    await result.saveAs(path.join(directory, filename));
+    assert.equal((await fs.readFile(path.join(directory, filename))).subarray(0, 2).toString(), 'PK');
+  }
+  await starterPage.close();
+
   const response = await page.goto(url, {waitUntil:'domcontentloaded'});
   assert.equal(response.status(), 200);
+  const displayedVersion = await page.locator('#app-version').innerText();
+  assert.match(displayedVersion, /^Inventory Tool \d+\.\d+\.\d+$/);
+  await page.screenshot({path:path.join(directory,'starter-desktop.png'), fullPage:true});
+  await page.setViewportSize({width:390, height:844});
+  await page.screenshot({path:path.join(directory,'starter-mobile.png'), fullPage:true});
+  assert(await page.evaluate(()=>document.documentElement.scrollWidth <= window.innerWidth));
+  await page.setViewportSize({width:1440, height:1000});
   await page.locator('#file-input').setInputFiles(path.join(directory, 'synthetic.xlsx'));
   await page.locator('#status-panel.is-ready, #status-panel.is-error').waitFor({timeout:180000});
   assert(await page.locator('#status-panel').getAttribute('class').then(c=>c.includes('is-ready')),
@@ -54,6 +80,13 @@ try {
   await download(0, 'repeat-report.xlsx');
   await download(1, 'repeat-updated.xlsx');
 
+  await page.locator('#file-input').setInputFiles(path.join(directory, 'Inventory_Demo_AZ.xlsx'));
+  await calculate();
+  assert(await page.locator('#results').isVisible(), await page.locator('#status-detail').innerText());
+  assert.match(await page.locator('#result-note').innerText(), /Yeni kod tələb olunmadı/);
+  await download(0, 'demo-report.xlsx');
+  await download(1, 'demo-updated.xlsx');
+
   await page.setViewportSize({width:390, height:844});
   await page.screenshot({path:path.join(directory,'mobile.png'), fullPage:true});
   assert(await page.evaluate(()=>document.documentElement.scrollWidth <= window.innerWidth));
@@ -78,6 +111,7 @@ try {
   assert(requests.every(r=>['GET','HEAD'].includes(r.method) && !r.hasBody));
   assert.equal(requests.length, requestsAfterLoad, 'Unexpected network activity after choosing/calculating workbooks');
   const result = {url, browser:browser.version(), engineSeconds, firstCalculation:firstResult,
+    displayedVersion, starterDownloadsWithoutJavascript:true, demoCalculated:true,
     stableCodes:true, dataErrorHandled:errorSummary, corruptFileHandled:true, mobileFits:true,
     requests:requests.length, requestsAfterEngineReady:requests.length-requestsAfterLoad,
     pageErrors:errors, failedRequests:failures};
