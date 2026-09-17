@@ -25,8 +25,9 @@ from openpyxl.worksheet.table import Table, TableStyleInfo
 from openpyxl.utils import get_column_letter
 from input_layout import SHEETS, FIELDS, OPTIONAL_HEADERS, SETTINGS, TYPES, canonical_columns
 from input_layout import AZ_FIELDS, AZ_SHEETS, resolve_sheet, schema_metadata, canonical_type, canonical_setting
+from input_layout import fit_data_rows
 
-VERSION = "1.2.1"
+VERSION = "1.2.2"
 getcontext().prec = 34
 ZERO = Decimal(0)
 EPS = Decimal("1e-18")
@@ -517,7 +518,6 @@ def write_sheet(wb, name, headers, records, note=""):
     body_font = Font(name="Arial", size=10, color="253448")
     body_alignment = Alignment(vertical="center")
     for ri, record in enumerate(records, 7):
-        ws.row_dimensions[ri].height = 21
         for ci, h in enumerate(headers, 1):
             v = excel_value(record.get(h))
             cell = ws.cell(ri, ci, v)
@@ -539,10 +539,10 @@ def write_sheet(wb, name, headers, records, note=""):
         ws.column_dimensions["E"].width = 95
         for row in ws.iter_rows(min_row=7, max_row=last):
             row[4].alignment = Alignment(wrap_text=True, vertical="center")
-            ws.row_dimensions[row[0].row].height = 44
             if row[0].value == "ERROR":
                 row[0].fill = PatternFill("solid", fgColor="FCE6E4")
                 row[0].font = Font(name="Arial", size=10, bold=True, color="AA2929")
+    fit_data_rows(ws)
     return ws
 
 
@@ -592,7 +592,7 @@ def build_report_workbook(result, input_path, digest, elapsed, language='en'):
     ws.column_dimensions["B"].width = 105
     for row in ws.iter_rows(min_row=7):
         row[1].alignment = Alignment(wrap_text=True, vertical="center")
-        ws.row_dimensions[row[0].row].height = 38
+    fit_data_rows(ws)
     if language == 'az':
         from report_locale import localize_workbook
         localize_workbook(wb)

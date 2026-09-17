@@ -34,7 +34,7 @@ def validate_site(directory):
                     asset = urlsplit(value)
                     if asset.path[2:] not in PUBLIC_FILES:
                         raise ValueError(f'Unknown local asset: {value}')
-                    if asset.path.endswith(('.js', '.css')) and parse_qs(asset.query) != {'v': [VERSION]}:
+                    if asset.path.endswith(('.js', '.css', '.xlsx')) and parse_qs(asset.query) != {'v': [VERSION]}:
                         raise ValueError(f'Outdated asset version: {value}')
 
     html = (directory / 'index.html').read_text(encoding='utf-8')

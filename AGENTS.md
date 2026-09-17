@@ -18,7 +18,7 @@
 - Commit/push only when requested. Browser QA uses synthetic fixtures and the
   scripts in `tools/browser_fixtures.py` and `tools/browser_smoke.mjs`.
 - Bump the application version for every user-facing update. Keep `VERSION` in
-  `inventory.py`, the footer and JS/CSS query versions in `dist/index.html`, and
+  `inventory.py`, the footer and JS/CSS/XLSX query versions in `dist/index.html`, and
   the versions in `README_RU.txt` / `README_AZ.txt` in sync. Build validates UI
   and asset versions. Group related changes in one release.
 - `sample_workbooks.py` generates public template/demo downloads during build.

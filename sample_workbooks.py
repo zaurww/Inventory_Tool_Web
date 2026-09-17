@@ -9,7 +9,8 @@ import xml.etree.ElementTree as ET
 from openpyxl import Workbook, load_workbook
 from openpyxl.styles import Alignment, Font, PatternFill
 
-from input_layout import AZ_SHEETS, FIELDS, INPUT_COLUMNS, SHEETS
+from input_layout import AZ_SHEETS, FIELDS, INPUT_COLUMNS, SHEETS, fit_data_rows
+from input_layout import DEMO_CHECK_SHEET as CHECK_SHEET
 from inventory import workbook_bytes
 from migrate_input import migrate_input_bytes
 from report_locale import LABELS, SHEETS as REPORT_SHEETS
@@ -17,7 +18,6 @@ from report_locale import LABELS, SHEETS as REPORT_SHEETS
 
 TEMPLATE_FILE = 'downloads/Inventory_Template_AZ.xlsx'
 DEMO_FILE = 'downloads/Inventory_Demo_AZ.xlsx'
-CHECK_SHEET = 'Nümunə yoxlaması'
 
 # Independently specified controls for the documented January–March example.
 # table, month, SKU (None for monthly totals), metric, expected value
@@ -126,7 +126,7 @@ def add_demo_checks(wb):
             ws.cell(ri, ci, value).alignment = Alignment(wrap_text=True, vertical='center')
         ws.cell(ri, 1).number_format = 'yyyy-mm'
         ws.cell(ri, 4).number_format = '#,##0.######'
-        ws.row_dimensions[ri].height = 32
+    fit_data_rows(ws)
     ws.freeze_panes = 'A7'
     ws.auto_filter.ref = f'A6:E{ws.max_row}'
 

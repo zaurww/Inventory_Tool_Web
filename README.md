@@ -50,5 +50,5 @@ Starter downloads are also checked with JavaScript disabled. The downloaded demo
 is calculated in the browser and its report is compared with 14 fixed controls.
 
 Every user-facing release increments `inventory.VERSION` and the matching
-footer / JS / CSS versions in `dist/index.html` and staff documentation. The
+footer / JS / CSS / XLSX versions in `dist/index.html` and staff documentation. The
 build rejects mismatched versions; versioned asset URLs also refresh browser caches.

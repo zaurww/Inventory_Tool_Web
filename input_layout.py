@@ -62,7 +62,33 @@ AZ_SETTINGS = {'Company': 'Şirkət', 'Start Month': 'Uçotun başlanğıc ayı'
 AZ_TYPES = {'Sale': 'Satış', 'Write-off': 'Silinmə', 'Customer': 'Alıcı',
             'Supplier': 'Təchizatçı', 'Import': 'İdxal', 'Local': 'Yerli'}
 META_SHEET = '_InventoryMeta'
+DEMO_CHECK_SHEET = 'Nümunə yoxlaması'
 SCHEMA_VERSION = 2
+
+
+def fit_data_rows(ws):
+    """Compact body rows, allowing wrapped text the space it actually needs."""
+    from math import ceil
+    from textwrap import wrap
+
+    ws.sheet_format.defaultRowHeight = 18
+    for row in ws.iter_rows(min_row=7):
+        height = 18
+        for cell in row:
+            if cell.value is None:
+                continue
+            size = cell.font.sz or 11
+            lines = 1
+            if isinstance(cell.value, str):
+                paragraphs = cell.value.split('\n')
+                if cell.alignment.wrap_text:
+                    width = ws.column_dimensions[cell.column_letter].width or 13
+                    characters = max(1, int((width - 2) * 11 / size))
+                    lines = sum(max(1, len(wrap(part, width=characters))) for part in paragraphs)
+                else:
+                    lines = len(paragraphs)
+            height = max(height, ceil(size * 1.25 * lines + 2))
+        ws.row_dimensions[row[0].row].height = min(409.5, height)
 
 
 def canonical_type(value):

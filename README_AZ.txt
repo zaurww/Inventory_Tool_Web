@@ -1,4 +1,4 @@
-ANBAR UÇOTU — VERSİYA 1.2.1
+ANBAR UÇOTU — VERSİYA 1.2.2
 
 BAŞLAMAQ
 
@@ -32,6 +32,8 @@ FORMAT VƏ UYĞUNLUQ
 Rus və ingilis dilində əvvəlki kitablar oxunur və ayrıca AZ nüsxəsinə çevrilir.
 Malların, kontragentlərin və sənədlərin adları, məbləğlər və kodlar tərcümə edilmir.
 Yeni kitabda ağıllı cədvəllər yoxdur. Adi diapazonlar, filtrlər və seçim siyahıları var.
+Adi məlumat sətrlərinin hündürlüyü 18 punktdur. Uzun mətnli sətrlər məzmuna görə böyüyür.
+Əvvəl endirilmiş kitabı saytda hesablayıb yenilənmiş nüsxəsini endirin.
 Gizli _InventoryMeta vərəqi format versiyasını saxlayır. Onu dəyişməyin.
 Naməlum format versiyası olduqda proqram hesablamanı dayandırır.
 Köhnə kitabdakı fərdi formulalar və adlandırılmış diapazonlar avtomatik

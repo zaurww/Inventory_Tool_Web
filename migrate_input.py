@@ -14,6 +14,7 @@ from input_layout import (
     AZ_FIELDS, AZ_SETTINGS, AZ_SHEETS, AZ_TYPES, INPUT_COLUMNS, META_SHEET,
     SCHEMA_VERSION, canonical_columns, canonical_setting, canonical_type,
     resolve_sheet, schema_metadata,
+    DEMO_CHECK_SHEET, fit_data_rows,
 )
 
 NOTES = {
@@ -105,6 +106,9 @@ def refresh_ranges(wb):
             ws.add_data_validation(rule)
             col = get_column_letter(ci)
             rule.add(f'{col}7:{col}{limits[name]}')
+    for title in (*AZ_SHEETS.values(), DEMO_CHECK_SHEET):
+        if title in wb:
+            fit_data_rows(wb[title])
 
 
 def migrate_input_bytes(source):
@@ -197,9 +201,6 @@ def migrate_input_bytes(source):
                     cell = row[ci]
                     if cell.value is not None and field in ('Supplier', 'Customer', 'Counterparty', 'Product', 'Name', 'Document'):
                         cell.alignment = Alignment(wrap_text=True, vertical='center')
-                        lines = math.ceil(len(str(cell.value)) / (WIDTHS.get(field, 24) * 0.9))
-                        ws.row_dimensions[cell.row].height = max(
-                            ws.row_dimensions[cell.row].height or 23, 15 * lines + 6)
         title = resolve_sheet(wb, 'Guide')
         if title:
             del wb[title]  # Replace program instructions, not accounting rows.
@@ -213,7 +214,6 @@ def migrate_input_bytes(source):
         for ri, (label, note) in enumerate(GUIDE, 7):
             guide.cell(ri, 1, label)
             guide.cell(ri, 2, note).alignment = Alignment(wrap_text=True, vertical='center')
-            guide.row_dimensions[ri].height = 42
         meta_ws = wb.create_sheet(META_SHEET)
         for row in [('schema_version', SCHEMA_VERSION), ('language', 'az'),
                     ('validation_profile', 'modern' if modern else 'legacy'),

@@ -1,7 +1,6 @@
 """Presentation-only Azerbaijani report labels. Never translates business values."""
-from math import ceil
 from openpyxl.styles import Alignment
-from input_layout import AZ_FIELDS, AZ_SETTINGS, AZ_SHEETS, AZ_TYPES
+from input_layout import AZ_FIELDS, AZ_SETTINGS, AZ_SHEETS, AZ_TYPES, fit_data_rows
 
 SHEETS = {
     **AZ_SHEETS, 'Monthly Summary': 'Aylıq yekun',
@@ -97,14 +96,10 @@ def localize_workbook(wb):
                 if isinstance(cell.value, str):
                     cell.data_type = 's'
                     cell.alignment = Alignment(wrap_text=True, vertical='center')
-                    width = ws.column_dimensions[cell.column_letter].width or 18
-                    lines = sum(max(1, ceil(len(line) / max(1, width - 3)))
-                                for line in cell.value.split('\n'))
-                    ws.row_dimensions[cell.row].height = max(
-                        ws.row_dimensions[cell.row].height or 21, 16 * lines + 6)
                 elif headers[cell.column - 1] == 'Month':
                     cell.number_format = 'yyyy-mm'
         for table in list(ws.tables):
             del ws.tables[table]
         ws.auto_filter.ref = f'A6:{ws.cell(6, len(headers)).column_letter}{max(7, ws.max_row)}'
+        fit_data_rows(ws)
     return wb
