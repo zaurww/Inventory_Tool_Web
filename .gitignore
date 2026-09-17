@@ -1,0 +1,26 @@
+# Python environment and cache
+.venv/
+__pycache__/
+*.py[cod]
+
+# Actual accounting data and generated reports
+Inventory_Input.xlsx
+Inventory_Report*.xlsx
+*_last_run.txt
+~$*.xlsx
+
+# Local settings
+.env
+.env.*
+*.pem
+*.key
+.vscode/
+.work/
+backups/
+outputs/
+examples/
+*.xlsx
+node_modules/
+
+# Generated browser Python copies (rebuilt before serving/publishing)
+dist/py/
