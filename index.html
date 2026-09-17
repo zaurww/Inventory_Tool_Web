@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="az">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Excel faylından aylıq orta maya dəyəri ilə yerli anbar hesablaması.">
+  <title>Anbar uçotu — aylıq orta maya dəyəri</title>
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <div>
+        <p class="eyebrow">Inventory Tool</p>
+        <h1>Anbar uçotu</h1>
+      </div>
+      <div class="local-badge" aria-label="Hesablama yerli aparılır">
+        <span class="local-dot" aria-hidden="true"></span>
+        Brauzerdə yerli hesablama
+      </div>
+    </header>
+
+    <main>
+      <section class="workspace" aria-labelledby="workspace-title">
+        <div class="workspace-heading">
+          <div>
+            <p class="step-label">Giriş kitabı və hesabat</p>
+            <h2 id="workspace-title">Doldurulmuş Excel kitabını seçin</h2>
+            <p class="intro">Proqram kitabı Azərbaycan dilinə çevirir, çatışmayan sətir kodlarını verir və aylıq orta maya dəyəri ilə formulasız hesabat hazırlayır.</p>
+          </div>
+          <div class="method-chip">Aylıq orta maya dəyəri · AZN</div>
+        </div>
+
+        <div class="content-grid">
+          <div class="primary-panel">
+            <label class="drop-zone" id="drop-zone" for="file-input">
+              <input id="file-input" type="file" accept=".xlsx,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet">
+              <span class="file-mark" aria-hidden="true">XLSX</span>
+              <span class="drop-title">Kitabı buraya sürükləyin</span>
+              <span class="drop-help">və ya kompüterdən seçin</span>
+              <span class="choose-button">Excel faylını seçin</span>
+            </label>
+
+            <div class="selected-file" id="selected-file" hidden>
+              <div class="file-copy">
+                <span class="file-name" id="file-name"></span>
+                <span class="file-meta" id="file-meta"></span>
+              </div>
+              <button class="text-button" id="change-file" type="button">Dəyişdir</button>
+            </div>
+
+            <button class="calculate-button" id="calculate-button" type="button" disabled>
+              Hesabla və faylları hazırla
+            </button>
+
+            <div class="status-panel" id="status-panel" aria-live="polite">
+              <span class="status-indicator" aria-hidden="true"></span>
+              <div>
+                <strong id="status-title">Hesablama modulu hazırlanır</strong>
+                <p id="status-detail">Modul yükləndikdən sonra seçilmiş kitab bu brauzerdə emal ediləcək.</p>
+              </div>
+            </div>
+
+            <section class="results" id="results" aria-labelledby="results-title" hidden>
+              <div class="result-heading">
+                <div>
+                  <p class="step-label">Hazırdır</p>
+                  <h3 id="results-title">Nəticələri endirin</h3>
+                </div>
+                <span class="result-time" id="result-time"></span>
+              </div>
+              <div class="download-list" id="download-list"></div>
+              <p class="result-note" id="result-note"></p>
+            </section>
+
+            <section class="error-panel" id="error-panel" aria-labelledby="error-title" hidden>
+              <h3 id="error-title">Məlumatlar düzəldilməlidir</h3>
+              <p id="error-summary"></p>
+              <ul id="error-list"></ul>
+              <div class="download-list" id="error-downloads"></div>
+            </section>
+          </div>
+
+          <aside class="assurance-panel" aria-label="Faylın emalı">
+            <h3>Fayl sizdə qalır</h3>
+            <p>Kitab bu brauzerin yaddaşında emal edilir. Uçot məlumatları serverə göndərilmir.</p>
+            <dl>
+              <div>
+                <dt>İlkin fayl</dt>
+                <dd>Dəyişdirilmir</dd>
+              </div>
+              <div>
+                <dt>Yenilənmiş giriş kitabı</dt>
+                <dd>Kodları olan ayrıca fayl</dd>
+              </div>
+              <div>
+                <dt>Hesabat</dt>
+                <dd>Excel-də statik dəyərlər</dd>
+              </div>
+            </dl>
+            <p class="network-note">İlk yükləmə üçün internet lazımdır. Brauzer proqram modullarını yükləyir; kitabın məzmunu bu sorğulara daxil edilmir.</p>
+          </aside>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <span>Inventory Tool 1.2.0</span>
+      <span>Bir ümumi anbar · ƏDV-siz məbləğlər</span>
+    </footer>
+  </div>
+
+  <script type="module" src="./app.js"></script>
+</body>
+</html>
